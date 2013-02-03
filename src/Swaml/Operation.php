@@ -192,6 +192,8 @@ class Operation extends Object
         $params = $this->getParameters();
         if (count($params) > 0) {
 
+            usort($params, $this->createParameterComparer($params));
+
             $json['parameters'] = array();
 
             foreach($params as $param) {
@@ -234,6 +236,44 @@ class Operation extends Object
         }
 
     }
+
+    private function createParameterComparer(Array $params)
+    {
+        static $typeOrder = array('path', 'header', 'query');
+
+        // this is required to keep parameters in natural sort order if they
+        // are not moved for other reasons
+        $params = array_values($params);
+
+        return function(Parameter $a, Parameter $b) use($params, $typeOrder) {
+
+            if ($a->required && !$b->required) {
+                return -1;
+            } else if ($b->required && !$a->required) {
+                return 1;
+            }
+
+            $aType = array_search(strtolower($a->paramType), $typeOrder);
+            $bType = array_search(strtolower($b->paramType), $typeOrder);
+
+            if ($aType !== false && $bType !== false) {
+                if ($aType != $bType) {
+                    return $aType - $bType;
+                }
+            } else if($aType === false && $bType !== false) {
+                return 1;
+            } else if ($bType === false && $aType !== false) {
+                return -1;
+            }
+
+            $aPos = array_search($a, $params, true);
+            $bPos = array_search($b, $params, true);
+
+            return $aPos - $bPos;
+        };
+    }
+
+
 
     private function includeModelPropertiesAsParameters(Model $model) {
 
