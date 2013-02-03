@@ -26,20 +26,28 @@ class Operation extends Object
 
     public function addParameter($name, $paramType = null)
     {
-        if ($paramType === null) {
+        if ($name instanceof Parameter) {
 
-            if ($this->endpoint->getName() === '{' . $name . '}') {
-                // parameter has same name as latest path component, so assume
-                // it is a path parameter
-                $paramType = 'path';
+            $param = $name;
+
+        } else {
+
+            if ($paramType === null) {
+
+                if ($this->endpoint->getName() === '{' . $name . '}') {
+                    // parameter has same name as latest path component, so assume
+                    // it is a path parameter
+                    $paramType = 'path';
+                }
+
             }
 
-        }
+            if ($paramType === 'path') {
+                $param = new PathParameter($this->getSpec(), $name);
+            } else {
+                $param = new Parameter($this->getSpec(), $name, $paramType);
+            }
 
-        if ($paramType === 'path') {
-            $param = new PathParameter($this, $name);
-        } else {
-            $param = new Parameter($this, $name, $paramType);
         }
 
         return ($this->parameters[$param->name] = $param);
@@ -47,6 +55,29 @@ class Operation extends Object
 
     public function apply(Array $data)
     {
+        $spec = $this->getSpec();
+
+        if (isset($data['include'])) {
+
+            $models = $data['include'];
+            if (!is_array($models)) $models = array($models);
+
+            foreach($models as $name) {
+
+                $model = $spec->getModel($name);
+
+                if (!$model) {
+                    throw new \Exception("Model not found: '$name'");
+                }
+
+                $this->includeModelPropertiesAsParameters($model);
+
+            }
+
+            unset($data['include']);
+
+        }
+
         if (isset($data['parameters'])) {
 
             foreach($data['parameters'] as $name => $options) {
@@ -200,6 +231,18 @@ class Operation extends Object
             return -1;
         } else {
             return $aIndex - $bIndex;
+        }
+
+    }
+
+    private function includeModelPropertiesAsParameters(Model $model) {
+
+        foreach($model->getProperties() as $property) {
+
+            foreach($property->toParameters($this) as $parameter) {
+                $this->addParameter($parameter);
+            }
+
         }
 
     }

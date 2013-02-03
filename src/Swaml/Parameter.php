@@ -16,16 +16,16 @@ class Parameter extends Object
 
     public $allowMultiple = false;
 
-    protected $op;
+    protected $spec;
 
     /**
      * @internal
      */
-    public function __construct(Operation $op, $name, $paramType = 'body')
+    public function __construct(Spec $spec, $name, $paramType = 'body')
     {
         $this->name = $name;
         $this->paramType = $paramType;
-        $this->op = $op;
+        $this->spec = $spec;
     }
 
     public function apply(Array $data)
@@ -47,9 +47,8 @@ class Parameter extends Object
     public function getModels()
     {
         $result = array();
-        $spec = $this->op->getSpec();
 
-        $model = $spec->getModel($this->type);
+        $model = $this->spec->getModel($this->type);
         if ($model) {
             $result[$model->name] = $model;
         }
