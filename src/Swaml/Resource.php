@@ -72,7 +72,7 @@ class Resource
 
         }
 
-        foreach($this->getModels() as $model) {
+        foreach($this->spec->getModels() as $model) {
             $result['models'][$model->name] = $model->toJSON();
         }
 
