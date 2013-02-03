@@ -16,6 +16,8 @@ class Parameter extends Object
 
     public $allowMultiple = false;
 
+    public $allowableValues = null;
+
     protected $spec;
 
     /**

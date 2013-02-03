@@ -79,6 +79,7 @@ class Property extends Object
         $param->type = $this->type;
         $param->required = $this->isRequiredForOperation($op);
         $param->paramType = null;
+        $param->allowableValues = $this->allowableValues;
 
         $result[] = $param;
 
