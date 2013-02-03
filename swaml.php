@@ -16,9 +16,14 @@ $usage = <<<END
 END;
 
 
-    for($level = 0; $level <= 1; $level++) {
+    $autoloadPaths = array(
+        'vendor/autoload.php',
+        '../vendor/autoload.php',
+        '../../autoload.php',
+    );
+    foreach($autoloadPaths as $file) {
 
-        $file = __DIR__ . '/' . str_repeat('../', $level) . 'vendor/autoload.php';
+        $file = __DIR__ . '/' . $file;
 
         if (is_file($file)) {
             require_once($file);
