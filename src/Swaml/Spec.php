@@ -133,6 +133,11 @@ class Spec
         return isset($this->models[$name]) ? $this->models[$name] : null;
     }
 
+    public function getModels()
+    {
+        return $this->models;
+    }
+
     public function toJSON()
     {
         $result = array(
