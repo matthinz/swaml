@@ -1,0 +1,10 @@
+nickname: createUser
+summary: Create user
+notes: This can only be done by the logged in user.
+responseClass: void
+parameters:
+    "":
+        paramType: body
+        type: User
+        required: true
+        description: Created user object

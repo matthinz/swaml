@@ -1,0 +1,8 @@
+nickname: deleteUser
+errorResponses:
+    -
+        code: 400
+        reason: Invalid username supplied
+    -
+        code: 404
+        reason: User not found

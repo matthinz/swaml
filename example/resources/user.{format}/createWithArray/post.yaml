@@ -1,0 +1,7 @@
+nickname: createUsersWithArrayInput
+summary: Creates list of users with given input array
+parameters:
+    "":
+        description: User data
+        type: Array<User>
+        paramType: body

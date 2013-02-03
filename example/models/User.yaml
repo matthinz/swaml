@@ -1,0 +1,14 @@
+properties:
+    id: long
+    username: string
+    firstname: string
+    lastname: string
+    email: string
+    userStatus:
+        description: User status
+        allowableValues:
+            - 1-registered
+            - 2-active
+            - 3-closed
+    phone: string
+    password: string

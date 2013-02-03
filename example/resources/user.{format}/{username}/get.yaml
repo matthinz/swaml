@@ -1,0 +1,4 @@
+nickname: getUserByName
+responseClass: User
+parameters:
+    username: string
