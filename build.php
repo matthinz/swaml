@@ -5,7 +5,7 @@
  *
  */
 
-    $outputDir = __DIR__;
+    $outputDir = __DIR__ . '/dist';
 
     if (!is_dir($outputDir)) {
         mkdir($outputDir);
