@@ -1,8 +1,7 @@
-#!/usr/bin/env php
 <?php
 $usage = <<<END
 
-    Usage: swaml.php [options] input_dir output_dir
+    Usage: php swaml.phar [options] input_dir output_dir
 
     Options:
 

@@ -9,7 +9,11 @@ directory of .json files you can then pass into, for example,
 
 ## Usage
 
-    swaml.php --api-base "http://your.api.base.path/" --doc-base "http://your.documentation/base/path" input_dir output_dir
+    php swaml.phar --api-base "http://your.api.base.path/" --doc-base "http://your.documentation/base/path" input_dir output_dir
+
+## Building
+
+A makefile is included to build `swaml.phar`. Run `make` from the project root.
 
 ## Why Does This Exist?
 
@@ -20,6 +24,5 @@ of the things those methods give you (DRY, etc.)
 
 ## TODO
 
-- Package as a .phar or something so you don't need composer to use.
 - Full swagger spec support.
 - Write some actual documentation.
