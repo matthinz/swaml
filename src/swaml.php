@@ -92,12 +92,21 @@ END;
         $apiBasePath = $docBasePath;
     }
 
-    if (!is_dir($inputDir)) {
+    $inputDir = realpath($inputDir);
+    $outputDir = realpath($outputDir);
 
+    if (!is_dir($inputDir)) {
         echo "\n\nInput directory does not exist: $inputDir\n\n";
         exit(1);
-
     }
+
+    echo <<<END
+
+Input Directory:  $inputDir
+Output Directory: $outputDir
+
+
+END;
 
     $gen = new Swaml\Builder();
     $spec = $gen->getSpec($inputDir);
