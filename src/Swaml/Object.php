@@ -31,11 +31,10 @@ abstract class Object
 
         if (count($data) > 0) {
 
-            $class = get_class($this);
             $keys = array_keys($data);
             $keys = implode(', ', $keys);
 
-            throw new \Exception("Unrecognized value(s) in data for $class: $keys");
+            throw new \Exception("Unrecognized value(s) in data for $this: $keys");
         }
 
     }
@@ -67,6 +66,24 @@ abstract class Object
 
         return $json;
 
+    }
+
+    public function __toString()
+    {
+        $class = str_replace('Swaml\\', '', get_class($this));
+        $name = null;
+
+        $keys = array('name', 'description', 'summary');
+        foreach($keys as $key) {
+            if (isset($this->$key)) {
+                $name = $this->$key;
+                break;
+            }
+        }
+
+        if ($name === null) $name = spl_object_hash($this);
+
+        return "$class '$name'";
     }
 
 }

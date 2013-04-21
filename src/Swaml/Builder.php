@@ -38,7 +38,12 @@ class Builder
 
             $name = pathinfo($file, PATHINFO_FILENAME);
             $error = $spec->addErrorResponse($name);
-            $error->apply($data);
+
+            try {
+                $error->apply($data);
+            } catch(\Exception $ex) {
+                $this->reportError($ex, $file);
+            }
 
         }
 
@@ -71,8 +76,13 @@ class Builder
             $model = $spec->addModel($data['name']);
 
             if ($model) {
-                $model->apply($data);
-                $this->models[$model->name] = $model;
+
+                try {
+                    $model->apply($data);
+                    $this->models[$model->name] = $model;
+                } catch (\Exception $ex) {
+                    $this->reportError($ex, $file);
+                }
             }
         }
 
@@ -107,7 +117,12 @@ class Builder
                 $data = $parser->parse($data);
 
                 $operation = $endpoint->addOperation($name);
-                $operation->apply($data);
+
+                try {
+                    $operation->apply($data);
+                } catch(\Exception $ex) {
+                    $this->reportError($ex, $file);
+                }
 
             }
 
@@ -171,5 +186,28 @@ class Builder
 
     }
 
+    private function reportError(\Exception $ex, $file = null)
+    {
+        $header = $file ? "Error processing file: $file\n" : '';
+        $message = $ex->getMessage();
+        $trace = $ex->getTraceAsString();
+
+        $srcDir = __DIR__ . '/';
+        $trace = str_replace($srcDir, '', $trace);
+
+        echo <<<END
+$header
+    $message
+
+--------------------------------------------------------------------------------
+Stack Trace
+$trace
+--------------------------------------------------------------------------------
+
+
+END;
+        exit(5);
+
+    }
 
 }
