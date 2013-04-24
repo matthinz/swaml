@@ -3,6 +3,5 @@
 /composer.*
 !/composer.json
 
-/dist
 /output
 /vendor

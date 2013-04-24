@@ -2,10 +2,9 @@
 /**
  * build.php
  * Generates the executable swaml.phar file.
- *
  */
 
-    $outputDir = __DIR__ . '/dist';
+    $outputDir = __DIR__;
 
     if (!is_dir($outputDir)) {
         mkdir($outputDir);
