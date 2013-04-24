@@ -1,4 +1,4 @@
-# swaml.php
+# swaml
 
 This is a quicky tool I wrote to generate REST api documentation in the
 [Swagger](http://developers.helloreverb.com/swagger/) format.
